@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	    http://www.springframework.org/schema/security 
+	    http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	 ">
+	 
+	<!-- 自定义SPRING SECURITY过滤链 -->
+		<bean id="securityFilterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+			<constructor-arg>
+				<list>
+				<security:filter-chain pattern="/app/**" filters="none" /><!-- images获取url -->
+					<security:filter-chain pattern="/images/**" filters="none" /><!-- images获取url -->
+					<security:filter-chain pattern="/js/**" filters="none" /><!-- js获取url -->
+					<security:filter-chain pattern="/fonts/**" filters="none" /><!-- js获取url -->
+					<security:filter-chain pattern="/css/**" filters="none" /><!-- css获取url -->
+					<security:filter-chain pattern="/assets/**" filters="none" /><!-- assets UI插件css获取url -->
+					<security:filter-chain pattern="/plugin/**" filters="none" /><!--  插件css获取url -->
+					<security:filter-chain pattern="/imageCode**" filters="none" /><!-- 验证码获取url -->
+					<security:filter-chain pattern="/phoneCode**" filters="none" /><!-- 验证码手机号码获取url -->
+					<security:filter-chain pattern="/**" filters="safetyFilter,concurrentSessionFilter,securityContextPersistenceFilter,logoutFilter
+																	,usernamePasswordAuthenticationFilter,rememberMeAuthenticationFilter,sessionManagementFilter
+																	,anonymousAuthFilter,exceptionTranslationFilter,filterSecurityInterceptor" />
+				</list>
+			</constructor-arg>
+		</bean>
+	<!-- 自定义Url过滤器  -->	
+		<bean id="safetyFilter" class="com.lys.system.filter.SafetyFilter" />
+	<!-- 自定义UserDetailsService认证    用户登录处理-->
+		<bean id="userDetailsService" class="com.lys.security.UserDetailsServiceImpl" />
+	<!-- 自定义资源权限关系认证 -->
+		<bean id="accessDecisionManager" class="com.lys.security.AccessDecisionManagerImpl" />
+	<!-- 自定义资源权限关系集合 -->
+		<bean id="securityMetadataSource" class="com.lys.security.SecurityMetadataSourceExtendImpl">
+			<property name="matcher" value="ant" />
+		</bean>
+	<!-- 自定义认证管理,资源,权限  -->
+		<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+			<property name="authenticationManager" ref="authenticationManager" />
+			<property name="accessDecisionManager" ref="accessDecisionManager" />
+			<property name="securityMetadataSource" ref="securityMetadataSource" />
+		</bean>
+	<!-- 登录认证过滤器-->
+		<bean id="usernamePasswordAuthenticationFilter" class="com.lys.security.UsernamePasswordAuthenticationExtendFilter">
+			<property name="authenticationManager" ref="authenticationManager" />
+			<property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy" />
+			<property name="usernameParameter" value="username" /><!-- 帐号name -->
+			<property name="passwordParameter" value="password" /><!-- 密码 -->
+			<property name="validateCodeParameter" value="validateCode" /><!-- 验证码 -->
+			<property name="openValidateCode" value="true" />
+			<property name="filterProcessesUrl" value="/login" />
+			<property name="rememberMeServices" ref="rememberMeServices" />
+			<property name="authenticationSuccessHandler">
+				<bean class="com.lys.security.LoginSuccessHandler"/>
+			</property>
+			<property name="authenticationFailureHandler">
+				<bean class="com.lys.security.LoginFailureHandler" />
+			</property>
+		</bean>
+<!-- ======================以下配置非特殊需求不可乱改实现====================== -->
+
+	<!-- 认证管理器 -->
+		<bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+			<property name="providers">
+				<list>
+					<ref bean="daoAuthenticationProvider" />
+					<ref bean="rememberMeAuthenticationProvider" />
+				</list>
+			</property>
+		</bean>
+	<!-- 登录认证处理 -->
+		<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+			<property name="hideUserNotFoundExceptions" value="false" />
+			<property name="userDetailsService" ref="userDetailsService" />
+			<property name="passwordEncoder" ref="passwordEncoder" />
+			<property name="saltSource" ref="saltSource" />
+		</bean>
+	<!-- 加密方式 -->
+		<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+	<!-- 配置加密盐值 -->
+		<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+			<property name="userPropertyToUse" value="username" />
+		</bean>
+	<!-- 注销过滤器 -->
+		<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+			<constructor-arg value="/system/admin" />
+			<constructor-arg>
+				<array>
+					<ref bean="logoutHandler" />
+					<ref bean="rememberMeServices" />
+				</array>
+			</constructor-arg>
+			<property name="filterProcessesUrl" value="/logout" />
+		</bean>
+	<!-- 注销监听器  -->
+		<bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+			 <property name="InvalidateHttpSession" value="true" />
+		</bean>
+	<!-- 持久化SecurityContext过滤器 -->
+		<bean id="securityContextPersistenceFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+			<property name="securityContextRepository" ref="securityContextRepository" />
+		</bean>
+	<!-- 生成HttpSessionSecurityContextRepository -->
+		<bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository">
+			<property name="allowSessionCreation" value="true" />
+			<property name="disableUrlRewriting" value="false" />
+		</bean>
+	<!-- SESSION固化保护,以及并发控制 -->
+		<bean id="sessionManagementFilter" class="org.springframework.security.web.session.SessionManagementFilter">
+			<constructor-arg name="securityContextRepository" ref="securityContextRepository" />
+			<property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy" />
+		</bean>
+	<!-- SESSION并发配置 -->
+		<bean id="concurrentSessionControlStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+			<constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+			<property name="maximumSessions" value="-1" /><!-- 1代表1个人登录，2代表2个人登录，-1代表不限制同一帐号同时登录 -->
+			<property name="exceptionIfMaximumExceeded" value="false" /><!-- true限制不允许第二个用户登录,false第二个登陆用户踢掉前一个登陆用户 --> 
+		</bean>
+	<!-- 实现列表当前登陆的用户，并踢出用户 -->
+		<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	<!-- SESSION并发处理 -->
+		<bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+			<property name="sessionRegistry" ref="sessionRegistry" />
+			<property name="expiredUrl" value="/error/concurrentSessionFilter" />
+			<property name="logoutHandlers">
+				<list>
+					<ref bean="logoutHandler" />
+				</list>
+			</property>
+		</bean>
+	<!-- 默认跳转 -->
+		<bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+			<property name="loginFormUrl" value="/system/admin" />
+		</bean>
+	<!-- 异常处理过滤器 -->
+		<bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+			<property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+			<property name="accessDeniedHandler">
+				<!-- 拒绝未授权访问跳转 -->
+				<bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+					<property name="errorPage" value="/error/nonFunction" />
+				</bean>
+			</property>
+		</bean>
+	<!-- 记住密码功能(COOKIE方式) -->
+		<bean id="rememberMeAuthenticationFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+			<property name="rememberMeServices" ref="rememberMeServices" />
+			<property name="authenticationManager" ref="authenticationManager" />
+		</bean>
+		<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+			<property name="userDetailsService" ref="userDetailsService" />
+			<property name="parameter" value="rememberMe" />
+			<!-- 默认时间604800秒(一个星期) -->
+			<property name="tokenValiditySeconds" value="31536000" />
+			<property name="key" value="springRocks" />
+		</bean>
+		<bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+			<property name="key" value="springRocks" />
+		</bean>
+	<!-- Voter投票器 -->
+		<bean id="expressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter">
+			<property name="expressionHandler">
+				<!-- 配置SPEL表达式 -->
+				<bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+			</property>
+		</bean>
+	<!-- AccessDecisionManager使用投票器 -->
+		<bean id="affirmativeBased" class="org.springframework.security.access.vote.AffirmativeBased">
+			<property name="decisionVoters">
+				<list>
+					<ref bean="expressionVoter" />
+				</list>
+			</property>
+		</bean>
+	<!-- 匿名访问过滤器 -->
+		<bean id="anonymousAuthFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+			<property name="key" value="anonymous" />
+			<property name="userAttribute" value="游客,ROLE_ANONYMOUS" />
+		</bean>
+		<bean id="anonymousAuthenticationProvider" class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+			<property name="key" value="anonymous" />
+		</bean>
+	<!-- 页面标签权限功能依赖 -->
+		<bean id="webInvocationFilter" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+			<constructor-arg ref="filterSecurityInterceptor" />
+		</bean>
+		
+</beans>

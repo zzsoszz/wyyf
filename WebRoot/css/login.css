@@ -1,0 +1,151 @@
+/* 0、reset
+ * -------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ul, ol, li,
+form, label, fieldset, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: normal;
+	font-family: inherit;
+	vertical-align: baseline;	
+}
+html{height:100%;}
+body{
+	font-size:14px;
+	font-family: Arial,"微软雅黑";
+	background: url("../images/loginBg.jpg");
+	background-attachment: fixed;
+	background-color: #777;
+	background-size: cover;
+	background-repeat: no-repeat;
+	color: #fff;
+	height:100%;
+}
+a {
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer;
+}
+a:hover {
+	text-decoration:underline;
+	color: #fff;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.loginBox {
+    width: 300px;
+    padding: 0px 42px;
+    margin: 0px auto;
+    background: url("../images/loginBox_bg.png") repeat-y scroll 0% 0% transparent;
+	min-height: 100%;
+	position:relative;
+}
+.loginCon{padding-bottom: 55px;}
+.loginBox .title {
+    width: 280px;
+    text-align: center;
+    margin: 0 auto;
+	padding-top:100px;
+}
+.loginBox .title h3 {
+    font-size: 28px;
+    line-height: 50px;
+    border-bottom: 1px solid #8992A2;
+}
+.loginBox .title h4 {
+    font-size: 24px;
+    line-height: 50px;
+}
+.input_username {
+    background: url("../images/input_username.jpg") no-repeat scroll 0% 0% transparent;
+    width: 300px;
+    height: 40px;
+    margin: 15px auto 0px;
+}
+.input_password {
+    background: url("../images/input_password.jpg") no-repeat scroll 0% 0% transparent;
+    width: 300px;
+    height: 40px;
+    margin: 15px auto 0px;
+}
+.input_yzm {
+    background: url("../images/input_yzm.jpg") no-repeat scroll 0% 0% transparent;
+    width: 150px;
+    float: left;
+}
+.yzm img {
+    float: right;
+}
+.input_250 {
+    width: 240px;
+    font-size: 18px;
+    margin: 8px 0px 0px 50px;
+    padding: 2px;
+    color: #3F618E;
+    border: medium none;
+}
+.input_120 {
+    font-size: 18px;
+    padding: 2px;
+    width: 135px;
+    color: #3F618E;
+    margin: 7px 0px 0px 7px;
+    border: medium none;
+}
+.clear {
+    clear: both;
+}
+.loginBtn {
+    background: none repeat scroll 0% 0% #189CFB;
+    width: 300px;
+    text-align: center;
+    margin: 20px auto;
+    line-height: 45px;
+    font-size: 22px;
+    display: block;
+}
+.loginBtn:hover {
+	text-decoration:none;
+	background-color:#178fe5;
+}
+/***************************/
+.forgot_pw {
+    float: left;
+    margin: 15px auto;
+    width: 300px;
+}
+.floatL {
+    float: left;
+}
+div.checker, div.checker span, div.checker input {
+    width: 19px;
+    height: 19px;
+}
+.floatR {
+    float: right;
+}
+
+
+
+
+/*******************************************/
+.footer {
+    position: absolute;
+	bottom: 0px;
+	width: 300px;
+}
+.footer p {
+    text-align: center;
+    color: #FFF;
+    line-height: 24px;
+    font-size: 12px;
+}

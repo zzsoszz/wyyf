@@ -1,0 +1,284 @@
+/* base style file
+ * 0、reset
+ * 1、general
+ * 2、layout
+ * 3、header
+ * 4、footer
+ * 5、side bar
+ * 6、crumNav
+ * 7、tool bar
+ * 8、pop modal
+ * 9、tip information
+ * 10、assistant
+ * 11、error page
+ * 12、width
+ * 13、height
+ * 14、margin
+ * 15、padding
+ * 16、pager
+ * 19、style
+ * 20、widget - general
+ * 21、widget - icon
+ * 22、widget - button
+ * 23、widget - tabs
+ * 24、widget - box
+ * 25、widget - table
+ * 26、widget - subNav
+ * 27、widget - dropdown list
+ * 99、other
+ * -------------------------------------------------- */
+
+/* 0、reset
+ * -------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ul, ol, li,
+form, label, fieldset, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: normal;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+html {
+	font-size: 14px;
+	height: 100%;
+}
+
+:focus {
+	outline: 0;
+}
+
+ul, ol {
+	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+
+blockquote, q {
+	quotes: "" "";
+}
+
+/* 1、general
+ * -------------------------------------------------- */
+body {
+	height:100%;
+	width:100%;
+	background:#849fbd;
+	font-size:14px;
+	font-family: Arial,"微软雅黑";
+	color: #555;
+}
+a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* 2、layout
+ * -------------------------------------------------- */
+.pageWrapper {
+	background:url("../images/bg.jpg");
+	/*background-position: center 100%;*/
+	background-attachment:fixed;
+	background-repeat: no-repeat;
+	min-height:100%;
+	background-size: cover;
+	position:relative;
+}
+.pageMain {
+	width:960px;
+	overflow:hidden;
+	margin:0 auto;
+	padding-top: 70px;
+	padding-bottom: 55px;
+}
+
+/* 3、header
+ * -------------------------------------------------- */
+.header {
+	height:70px;
+	background:url(../images/headerBg.png) repeat-x;
+	width:100%;
+}
+.header .content {
+	width:960px;
+	margin:0 auto;
+}
+.header .content .title {
+	font-size:24px;
+	color:#fff;
+	float:left;
+	line-height:70px;
+}
+.header .content .signOut {
+	float: right;
+}
+.header .content .signOut ul li {
+	color: #fff;
+    float: left;
+    padding: 10px;
+	line-height:48px;
+}
+.header .content .signOut ul li a {
+	color:#fff;
+}
+.header .content .signOut ul li a:hover {
+	color:#fff;
+	text-decoration:underline;
+}
+
+/* 4、footer
+ * -------------------------------------------------- */
+.footer {
+	height:55px;
+	background:url(../images/footerBg.png) repeat-x;
+	width:100%;
+	position:absolute;
+	bottom:0;
+	padding-top:15px;
+}
+.footer p {
+	text-align:center;
+	color:#fff;
+	line-height:24px;
+	font-size:12px;
+}
+/* 14、margin
+ * -------------------------------------------------- */
+.pageMain .mr_0 {
+	margin-right:0;
+}
+
+/* 19、style
+ * -------------------------------------------------- */
+.img_user {
+	background:url(../images/img_user.png) no-repeat;
+	width:40px;
+	height:48px;
+	float:left;
+}
+.part {
+	width:260px;
+	height:170px;
+	float:left;
+	margin-right:30px;
+	margin-bottom:30px;
+	font-size:26px;
+	padding:15px 20px;
+	position:relative;
+}
+.part i {
+	width:77px;
+	height:72px;
+	float:left;
+	position:absolute;
+	bottom:50px;
+	left:110px;
+}
+.sp {
+	background:#6a71e5;
+}
+.hz {
+	background:#12c8af;
+}
+.ba {
+	background:#0091fe;
+}
+.zhcx {
+	background:#24b8fe;
+}
+.tjfx {
+	background:#fb9900;
+}
+.xtgl {
+	background:#f44236;
+}
+.sp:hover {
+	background:#646ad9;
+}
+.hz:hover {
+	background:#11baa4;
+}
+.ba:hover {
+	background:#0088f0;
+}
+.zhcx:hover {
+	background:#22aef0;
+}
+.tjfx:hover {
+	background:#e58e00;
+}
+.xtgl:hover {
+	background:#e03d31;
+}
+.disable {
+	cursor:default;
+}
+.sp.disable  {
+	background:#acafe5;
+}
+.hz.disable  {
+	background:#81c7be;
+}
+.ba.disable  {
+	background:#65bbfc;
+}
+.zhcx.disable  {
+	background:#88d8fc;
+}
+.tjfx.disable  {
+	background:#faca7d;
+}
+.xtgl.disable {
+	background:#f5877f;
+}
+
+/* 21、widget - icon
+ * -------------------------------------------------- */
+.icon_sp {
+	background:url(../images/icon_sp.png) no-repeat;
+}
+.icon_hz {
+	background:url(../images/icon_hz.png) no-repeat;
+}
+.icon_ba {
+	background:url(../images/icon_ba.png) no-repeat;
+}
+.icon_zhcx {
+	background:url(../images/icon_zhcx.png) no-repeat;
+}
+.icon_tjfx {
+	background:url(../images/icon_tjfx.png) no-repeat;
+}
+.icon_xtgl {
+	background:url(../images/icon_xtgl.png) no-repeat;
+}
+
+a:hover,a:focus {
+	color: #ffffff;
+	text-decoration: none;
+}
+*, *:before, *:after {box-sizing:content-box}

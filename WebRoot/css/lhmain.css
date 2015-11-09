@@ -1,0 +1,25 @@
+
+
+.clearfix:after {content: "\0020"; display: block; height: 0;clear: both; visibility: hidden; }
+.clearfix {zoom: 1;} 
+.clear{clear:both;}
+
+
+/*首页*/
+.index{background-color: #10ADA2;color: white;}
+.recolor{color: #FE3333;}
+
+
+/*选择城市*/
+.checkadd_choose 
+.checkadd_choose dl dt{color: #A4A4A4;border-bottom: 1px solid #E3E3E3;line-height: 60px;}
+.checkadd_choose dl dd{border-bottom: 1px solid #E3E3E3; line-height: 40px;padding-left: 10px;}
+
+
+/*网众验房*/
+/*免费验房*/
+.yanfang_nav ul{margin: 0px;padding: 0px;}
+.yanfang_nav ul li{list-style: none;float: left;line-height: 50px;width: 100px;text-align: center;}
+.yanfang_nav ul li:nth-child(2){margin-left: 25px;}
+ .yanfang_form .yanfang_input{margin: 10px 0px;}
+ .yanfang_form .yanfang_input input{height: 40px;width: 100%;border: none;border-bottom: 1px solid #E8E8E8;}
